@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.isensmartcompanion"
-    compileSdk = 34
+    namespace = "fr.isen.baudillon.isensmartcompanion"
+    compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.example.isensmartcompanion"
+        applicationId = "fr.isen.baudillon.isensmartcompanion"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
@@ -49,6 +49,7 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.material)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
