@@ -117,16 +117,19 @@ fun MainScreen() {
                 onClick = {
                     if (textState.isNotBlank()) {
                         keyboardController?.hide()
-                        messageList.add(textState)
-                        textState = ""
-                        Toast.makeText(context, "Message envoyé", Toast.LENGTH_SHORT).show()
-                        val repIa =
-                            "Merci de votre question, je vais essayer de trouver la réponse dans les plus brefs délais !"
-                        messageList.add(repIa)
+                        messageList.add("Vous: $textState")
 
                         coroutineScope.launch {
-
-                            listState.scrollToItem(messageList.lastIndex)
+                            try {
+                                val geminiResponse = generateText(textState)
+                                messageList.add("Isen Companion: $geminiResponse")
+                            } catch (e: Exception) {
+                                Toast.makeText(context, "Erreur", Toast.LENGTH_SHORT).show()
+                            } finally {
+                                textState = ""
+                                Toast.makeText(context, "Message envoyé", Toast.LENGTH_SHORT).show()
+                                listState.scrollToItem(messageList.lastIndex)
+                            }
                         }
 
                     } else {

@@ -67,11 +67,11 @@ fun EventDetailScreen(
         )
         Spacer(modifier = Modifier.height(50.dp))
 
-        Text("Titre : $title", style = MaterialTheme.typography.bodyLarge, fontSize = 20.sp)
-        Text("Description : $description", style = MaterialTheme.typography.bodyMedium, fontSize = 20.sp, textAlign = TextAlign.Center)
-        Text("Date : $date", style = MaterialTheme.typography.bodyMedium, fontSize = 20.sp)
-        Text("Lieu : $location", style = MaterialTheme.typography.bodyMedium, fontSize = 20.sp)
-        Text("Catégorie : $category", style = MaterialTheme.typography.bodyMedium, fontSize = 20.sp)
+        Text("Titre : $title", modifier = Modifier.padding(5.dp), color = Color.Black,style = MaterialTheme.typography.bodyLarge, fontSize = 20.sp, textAlign = TextAlign.Center)
+        Text("Description : $description", modifier = Modifier.padding(5.dp),style = MaterialTheme.typography.bodyMedium, fontSize = 20.sp, textAlign = TextAlign.Center)
+        Text("Date : $date",modifier = Modifier.padding(5.dp), style = MaterialTheme.typography.bodyMedium, fontSize = 20.sp)
+        Text("Lieu : $location",modifier = Modifier.padding(5.dp), style = MaterialTheme.typography.bodyMedium, fontSize = 20.sp)
+        Text("Catégorie : $category",modifier = Modifier.padding(5.dp), style = MaterialTheme.typography.bodyMedium, fontSize = 20.sp)
 
         Spacer(modifier = Modifier.height(180.dp))
 
@@ -95,7 +95,7 @@ fun EventDetailScreen(
                     .height(200.dp)
             )
         }
-        Spacer(modifier = Modifier.height(30.dp))
+        Spacer(modifier = Modifier.height(15.dp))
 
         Image(
             painter = painterResource(id = R.drawable.isen_logo),
