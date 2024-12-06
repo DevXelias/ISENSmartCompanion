@@ -3,7 +3,11 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin") version "2.0.1"
+    id("com.google.devtools.ksp")
+
 }
+
+
 
 android {
     namespace = "fr.isen.baudillon.isensmartcompanion"
@@ -57,6 +61,12 @@ dependencies {
     implementation(libs.converter.gson)
     implementation(libs.generativeai)
     implementation(libs.secrets.gradle.plugin)
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.material.icons.extended)
+    implementation(libs.androidx.activity.ktx)
+    implementation(libs.androidx.fragment.ktx)
+    ksp(libs.androidx.room.compiler)
+    implementation(libs.annotations)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

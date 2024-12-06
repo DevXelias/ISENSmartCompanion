@@ -38,6 +38,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 
+
 @Composable
 fun MainScreen() {
     val messageList = remember { mutableStateListOf<String>() }
@@ -46,6 +47,7 @@ fun MainScreen() {
     val context = LocalContext.current
     val listState = rememberLazyListState()
     val coroutineScope = rememberCoroutineScope()
+
 
     Column(
         modifier = Modifier
@@ -123,6 +125,10 @@ fun MainScreen() {
                             try {
                                 val geminiResponse = generateText(textState)
                                 messageList.add("Isen Companion: $geminiResponse")
+
+                                saveExchange(context = context,
+                                    question = textState,
+                                    response = geminiResponse)
                             } catch (e: Exception) {
                                 Toast.makeText(context, "Erreur", Toast.LENGTH_SHORT).show()
                             } finally {
@@ -146,4 +152,14 @@ fun MainScreen() {
             }
         }
     }
+}
+
+suspend fun saveExchange(context: android.content.Context,question:String, response: String) {
+    val exchange = QuestionResponse(
+        question = question,
+        response = response,
+        timestamp = System.currentTimeMillis()
+    )
+    val dao = DatabaseModule.getDao(context)
+    dao.insert(exchange)
 }

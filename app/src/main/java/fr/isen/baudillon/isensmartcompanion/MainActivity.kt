@@ -1,8 +1,13 @@
 package fr.isen.baudillon.isensmartcompanion
 
+import android.Manifest
+import android.os.Build
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
@@ -18,7 +23,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -26,14 +30,24 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 
 class MainActivity : ComponentActivity() {
+
+
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        createNotificationChannel(this)
+        requestNotificationPermission()
+
+
+
         setContent {
             MyApp()
+
         }
     }
-}
 
+
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun MyApp() {
     val navController = rememberNavController()
@@ -43,7 +57,8 @@ fun MyApp() {
     ) { innerPadding ->
         NavigationGraph(
             navController = navController,
-            modifier = Modifier.padding(innerPadding)
+            modifier = Modifier.padding(innerPadding),
+
         )
     }
 }
@@ -75,14 +90,19 @@ fun BottomNavigationBar(navController: NavHostController) {
                             restoreState = true
                         }
                     }
+
+
                 }
             )
         }
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun NavigationGraph(navController: NavHostController, modifier: Modifier = Modifier) {
+
+
     NavHost(
         navController = navController,
         startDestination = BottomNavItem.MainScreen.route,
@@ -95,7 +115,9 @@ fun NavigationGraph(navController: NavHostController, modifier: Modifier = Modif
             EventsScreen()
         }
         composable(BottomNavItem.AgendaScreen.route) {
-            AgendaScreen()
+
+            CalendarScreen()
+
         }
         composable(BottomNavItem.HistoryScreen.route) {
             HistoryScreen()
@@ -106,8 +128,8 @@ fun NavigationGraph(navController: NavHostController, modifier: Modifier = Modif
 
 
 
-@Composable fun AgendaScreen() { Text("Écran Agenda") }
-@Composable fun HistoryScreen() { Text("Écran Historique") }
+
+
 
 sealed interface BottomNavItem {
     val route: String
@@ -139,9 +161,35 @@ sealed interface BottomNavItem {
     }
 }
 
+    private fun requestNotificationPermission() {
 
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    MyApp()
+        val requestPermissionLauncher =
+            registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+                if (isGranted) {
+                    // Permission accordée, afficher la notification
+                    Toast.makeText(this, "Permission accordée pour les notifications", Toast.LENGTH_SHORT).show()
+                } else {
+                    // Permission refusée, informer l'utilisateur
+                    Toast.makeText(this, "Permission refusée pour les notifications", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (!hasNotificationPermission(this)) {
+                requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+            } else {
+                // La permission est déjà accordée
+                //showNotification(this)
+            }
+        } else {
+            // Pas besoin de permission pour les anciennes versions
+            //showNotification(this)
+        }
+    }
+
+
+
 }
+
+
+

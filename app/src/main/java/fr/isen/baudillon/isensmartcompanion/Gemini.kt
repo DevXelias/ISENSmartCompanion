@@ -9,7 +9,7 @@ import com.google.ai.client.generativeai.type.generationConfig
 
 val model = GenerativeModel(
     modelName = "gemini-1.5-flash-001",
-    apiKey = "AIzaSyCJyjom47HLrJh-6xmZEfigsp3bOybd9A8",
+    apiKey = BuildConfig.GEMINI_API_KEY,
     generationConfig = generationConfig {
         temperature = 0.15f
         topK = 32
